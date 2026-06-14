@@ -1,0 +1,24 @@
+{
+  "name": "llm-gateway-monorepo",
+  "version": "1.0.0",
+  "description": "Multi-Tenant LLM Gateway Monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "start:gateway": "npm run start --workspace=apps/gateway-api",
+    "start:worker": "npm run start --workspace=apps/worker",
+    "start:frontend": "npm run start --workspace=apps/frontend",
+    "dev:gateway": "npm run dev --workspace=apps/gateway-api",
+    "dev:worker": "npm run dev --workspace=apps/worker",
+    "dev:frontend": "npm run dev --workspace=apps/frontend"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.6",
+    "ts-node": "^10.9.1",
+    "rimraf": "^5.0.1"
+  }
+}

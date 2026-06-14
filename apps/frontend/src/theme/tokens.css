@@ -1,0 +1,271 @@
+/* ═══════════════════════════════════════════════════════════════
+   LLM GATEWAY — Design Token System
+   "Datadog built by Apple's Human Interface team"
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Typography ─────────────────────────────────────────── */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+
+  --text-xs: 0.6875rem;   /* 11px */
+  --text-sm: 0.75rem;     /* 12px */
+  --text-base: 0.8125rem; /* 13px */
+  --text-md: 0.875rem;    /* 14px */
+  --text-lg: 1rem;        /* 16px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+  --text-3xl: 2rem;       /* 32px */
+  --text-4xl: 2.5rem;     /* 40px */
+
+  --weight-light: 300;
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.7;
+
+  /* ── Spacing ────────────────────────────────────────────── */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+
+  /* ── Border Radius ──────────────────────────────────────── */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+  --radius-full: 9999px;
+
+  /* ── Transitions ────────────────────────────────────────── */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 400ms;
+  --duration-slower: 600ms;
+
+  /* ── Layout ─────────────────────────────────────────────── */
+  --sidebar-width: 68px;
+  --topbar-height: 56px;
+
+  /* ── Z-Index ────────────────────────────────────────────── */
+  --z-base: 1;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   DARK THEME — Command Center
+   Deep graphite, rich blacks, frosted glass, subtle glow
+   ══════════════════════════════════════════════════════════════ */
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* ── Background Layers ──────────────────────────────────── */
+  --bg-base: #07070d;
+  --bg-surface: #0e0e18;
+  --bg-elevated: #141422;
+  --bg-hover: rgba(255, 255, 255, 0.04);
+  --bg-active: rgba(255, 255, 255, 0.06);
+
+  /* ── Glass ──────────────────────────────────────────────── */
+  --glass-bg: rgba(14, 14, 24, 0.65);
+  --glass-bg-solid: rgba(14, 14, 24, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-border-hover: rgba(255, 255, 255, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.03);
+  --glass-blur: 20px;
+  --glass-blur-heavy: 40px;
+
+  /* ── Text ────────────────────────────────────────────────── */
+  --text-primary: #f0f0f5;
+  --text-secondary: #a0a0b8;
+  --text-muted: #5c5c72;
+  --text-inverse: #07070d;
+
+  /* ── Accent / Brand ─────────────────────────────────────── */
+  --color-primary: #8b5cf6;
+  --color-primary-hover: #a78bfa;
+  --color-primary-muted: rgba(139, 92, 246, 0.15);
+  --color-primary-glow: rgba(139, 92, 246, 0.3);
+  --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #3b82f6 100%);
+  --gradient-primary-subtle: linear-gradient(135deg, rgba(139,92,246,0.15) 0%, rgba(99,102,241,0.08) 100%);
+
+  /* ── Semantic Colors ────────────────────────────────────── */
+  --color-success: #34d399;
+  --color-success-muted: rgba(52, 211, 153, 0.12);
+  --color-success-glow: rgba(52, 211, 153, 0.25);
+
+  --color-error: #f87171;
+  --color-error-muted: rgba(248, 113, 113, 0.12);
+  --color-error-glow: rgba(248, 113, 113, 0.25);
+
+  --color-warning: #fbbf24;
+  --color-warning-muted: rgba(251, 191, 36, 0.12);
+  --color-warning-glow: rgba(251, 191, 36, 0.25);
+
+  --color-info: #60a5fa;
+  --color-info-muted: rgba(96, 165, 250, 0.12);
+  --color-info-glow: rgba(96, 165, 250, 0.25);
+
+  /* ── Shadows ────────────────────────────────────────────── */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.7);
+  --shadow-glow: 0 0 20px var(--color-primary-glow);
+  --shadow-glow-success: 0 0 20px var(--color-success-glow);
+  --shadow-glow-error: 0 0 20px var(--color-error-glow);
+
+  /* ── Charts ─────────────────────────────────────────────── */
+  --chart-grid: rgba(255, 255, 255, 0.04);
+  --chart-text: var(--text-muted);
+  --chart-line-1: #8b5cf6;
+  --chart-line-2: #3b82f6;
+  --chart-line-3: #34d399;
+  --chart-line-4: #fbbf24;
+  --chart-area-1: rgba(139, 92, 246, 0.15);
+  --chart-area-2: rgba(59, 130, 246, 0.15);
+
+  /* ── Sidebar ────────────────────────────────────────────── */
+  --sidebar-bg: rgba(7, 7, 13, 0.85);
+  --sidebar-border: rgba(255, 255, 255, 0.05);
+  --sidebar-icon: var(--text-muted);
+  --sidebar-icon-active: var(--color-primary);
+  --sidebar-indicator: var(--color-primary);
+
+  /* ── Input ──────────────────────────────────────────────── */
+  --input-bg: rgba(255, 255, 255, 0.03);
+  --input-border: rgba(255, 255, 255, 0.08);
+  --input-border-focus: var(--color-primary);
+  --input-placeholder: var(--text-muted);
+
+  /* ── Scrollbar ──────────────────────────────────────────── */
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: rgba(255, 255, 255, 0.08);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.14);
+
+  /* ── Mesh Gradient Background ───────────────────────────── */
+  --mesh-1: radial-gradient(ellipse at 15% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+  --mesh-2: radial-gradient(ellipse at 85% 20%, rgba(59, 130, 246, 0.06) 0%, transparent 50%);
+  --mesh-3: radial-gradient(ellipse at 50% 50%, rgba(99, 102, 241, 0.04) 0%, transparent 60%);
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   LIGHT THEME — Crystal Workspace
+   Soft whites, frosted crystal glass, elegant shadows
+   ══════════════════════════════════════════════════════════════ */
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* ── Background Layers ──────────────────────────────────── */
+  --bg-base: #f4f4f8;
+  --bg-surface: #ffffff;
+  --bg-elevated: #ffffff;
+  --bg-hover: rgba(0, 0, 0, 0.03);
+  --bg-active: rgba(0, 0, 0, 0.05);
+
+  /* ── Glass ──────────────────────────────────────────────── */
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-bg-solid: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.06);
+  --glass-border-hover: rgba(0, 0, 0, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.8);
+  --glass-blur: 20px;
+  --glass-blur-heavy: 40px;
+
+  /* ── Text ────────────────────────────────────────────────── */
+  --text-primary: #1a1a2e;
+  --text-secondary: #5c5c72;
+  --text-muted: #9090a8;
+  --text-inverse: #f0f0f5;
+
+  /* ── Accent / Brand ─────────────────────────────────────── */
+  --color-primary: #7c3aed;
+  --color-primary-hover: #6d28d9;
+  --color-primary-muted: rgba(124, 58, 237, 0.08);
+  --color-primary-glow: rgba(124, 58, 237, 0.15);
+  --gradient-primary: linear-gradient(135deg, #7c3aed 0%, #6366f1 50%, #3b82f6 100%);
+  --gradient-primary-subtle: linear-gradient(135deg, rgba(124,58,237,0.06) 0%, rgba(99,102,241,0.04) 100%);
+
+  /* ── Semantic Colors ────────────────────────────────────── */
+  --color-success: #10b981;
+  --color-success-muted: rgba(16, 185, 129, 0.08);
+  --color-success-glow: rgba(16, 185, 129, 0.15);
+
+  --color-error: #ef4444;
+  --color-error-muted: rgba(239, 68, 68, 0.08);
+  --color-error-glow: rgba(239, 68, 68, 0.15);
+
+  --color-warning: #f59e0b;
+  --color-warning-muted: rgba(245, 158, 11, 0.08);
+  --color-warning-glow: rgba(245, 158, 11, 0.15);
+
+  --color-info: #3b82f6;
+  --color-info-muted: rgba(59, 130, 246, 0.08);
+  --color-info-glow: rgba(59, 130, 246, 0.15);
+
+  /* ── Shadows ────────────────────────────────────────────── */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.10);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 20px var(--color-primary-glow);
+  --shadow-glow-success: 0 0 20px var(--color-success-glow);
+  --shadow-glow-error: 0 0 20px var(--color-error-glow);
+
+  /* ── Charts ─────────────────────────────────────────────── */
+  --chart-grid: rgba(0, 0, 0, 0.05);
+  --chart-text: var(--text-muted);
+  --chart-line-1: #7c3aed;
+  --chart-line-2: #3b82f6;
+  --chart-line-3: #10b981;
+  --chart-line-4: #f59e0b;
+  --chart-area-1: rgba(124, 58, 237, 0.08);
+  --chart-area-2: rgba(59, 130, 246, 0.08);
+
+  /* ── Sidebar ────────────────────────────────────────────── */
+  --sidebar-bg: rgba(255, 255, 255, 0.75);
+  --sidebar-border: rgba(0, 0, 0, 0.06);
+  --sidebar-icon: var(--text-muted);
+  --sidebar-icon-active: var(--color-primary);
+  --sidebar-indicator: var(--color-primary);
+
+  /* ── Input ──────────────────────────────────────────────── */
+  --input-bg: rgba(0, 0, 0, 0.02);
+  --input-border: rgba(0, 0, 0, 0.08);
+  --input-border-focus: var(--color-primary);
+  --input-placeholder: var(--text-muted);
+
+  /* ── Scrollbar ──────────────────────────────────────────── */
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: rgba(0, 0, 0, 0.1);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.18);
+
+  /* ── Mesh Gradient Background ───────────────────────────── */
+  --mesh-1: radial-gradient(ellipse at 15% 80%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+  --mesh-2: radial-gradient(ellipse at 85% 20%, rgba(59, 130, 246, 0.03) 0%, transparent 50%);
+  --mesh-3: radial-gradient(ellipse at 50% 50%, rgba(99, 102, 241, 0.02) 0%, transparent 60%);
+}
