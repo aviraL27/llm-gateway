@@ -231,7 +231,7 @@
   animation: spin-slow 8s linear infinite;
 }
 
-.animate-pulse-dot {
+.animate-pulse-dot, .dot-pulse {
   animation: pulse-dot 2s var(--ease-in-out) infinite;
 }
 

@@ -22,24 +22,30 @@ export default function GlassInput({
   const wrapperStyle: CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
-    gap: 'var(--space-1)',
+    gap: '6px',
     ...containerStyle,
   };
 
   const fieldStyle: CSSProperties = {
     display: 'flex',
     alignItems: 'center',
-    gap: 'var(--space-2)',
-    background: 'var(--input-bg)',
-    border: `1px solid ${error ? 'var(--color-error)' : focused ? 'var(--input-border-focus)' : 'var(--input-border)'}`,
+    gap: '10px',
+    background: focused ? 'rgba(0, 0, 0, 0.25)' : 'var(--input-bg)',
+    border: `1px solid ${
+      error
+        ? 'var(--color-error)'
+        : focused
+        ? 'rgba(139, 92, 246, 0.45)'
+        : 'var(--input-border)'
+    }`,
     borderRadius: 'var(--radius-md)',
     padding: '10px 14px',
-    transition: 'all var(--duration-fast) var(--ease-out)',
+    transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
     boxShadow: focused
       ? error
-        ? 'var(--shadow-glow-error)'
-        : '0 0 0 3px var(--color-primary-muted)'
-      : 'none',
+        ? '0 0 12px rgba(239, 68, 68, 0.2)'
+        : '0 0 0 3px rgba(139, 92, 246, 0.15), inset 0 1.5px 3px rgba(0, 0, 0, 0.3)'
+      : 'inset 0 1px 2px rgba(0, 0, 0, 0.15)',
   };
 
   const inputStyle: CSSProperties = {
@@ -48,9 +54,9 @@ export default function GlassInput({
     border: 'none',
     outline: 'none',
     color: 'var(--text-primary)',
-    fontSize: 'var(--text-md)',
+    fontSize: '0.8125rem', // 13px
     fontFamily: 'var(--font-sans)',
-    lineHeight: 1.4,
+    lineHeight: '1.4',
     width: '100%',
     ...style,
   };
@@ -58,25 +64,30 @@ export default function GlassInput({
   return (
     <div style={wrapperStyle}>
       {label && (
-        <label style={{
-          fontSize: 'var(--text-sm)',
-          fontWeight: 'var(--weight-medium)' as any,
-          color: error ? 'var(--color-error)' : 'var(--text-secondary)',
-          letterSpacing: '0.02em',
-          transition: 'color var(--duration-fast) var(--ease-out)',
-        }}>
+        <label
+          style={{
+            fontSize: 'var(--text-xs)', // 11px
+            fontWeight: 600,
+            color: error ? 'var(--color-error)' : 'var(--text-secondary)',
+            letterSpacing: '0.05em',
+            textTransform: 'uppercase',
+            transition: 'color 0.2s ease',
+          }}
+        >
           {label}
         </label>
       )}
       <div style={fieldStyle}>
         {icon && (
-          <span style={{
-            color: focused ? 'var(--color-primary)' : 'var(--text-muted)',
-            display: 'flex',
-            alignItems: 'center',
-            transition: 'color var(--duration-fast) var(--ease-out)',
-            flexShrink: 0,
-          }}>
+          <span
+            style={{
+              color: focused ? 'var(--color-primary)' : 'var(--text-muted)',
+              display: 'flex',
+              alignItems: 'center',
+              transition: 'color 0.2s ease',
+              flexShrink: 0,
+            }}
+          >
             {icon}
           </span>
         )}
@@ -94,11 +105,14 @@ export default function GlassInput({
         />
       </div>
       {error && (
-        <span style={{
-          fontSize: 'var(--text-xs)',
-          color: 'var(--color-error)',
-          marginTop: '2px',
-        }}>
+        <span
+          style={{
+            fontSize: 'var(--text-xs)',
+            color: 'var(--color-error)',
+            marginTop: '2px',
+            fontWeight: 500,
+          }}
+        >
           {error}
         </span>
       )}
