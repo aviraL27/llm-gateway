@@ -4,7 +4,7 @@ services:
     name: gateway-api
     env: docker
     dockerfilePath: apps/gateway-api/Dockerfile
-    context: .
+    dockerContext: .
     plan: starter
     envVars:
       - key: PORT
@@ -19,10 +19,7 @@ services:
           name: gateway-redis
           property: connectionString
       - key: PII_SERVICE_URL
-        fromService:
-          type: pserv
-          name: pii-service
-          property: host
+        value: http://pii-service:8000
       - key: RUN_MIGRATIONS
         value: "true"
       - key: SUPABASE_URL
@@ -39,7 +36,7 @@ services:
     name: log-worker
     env: docker
     dockerfilePath: apps/worker/Dockerfile
-    context: .
+    dockerContext: .
     plan: starter
     envVars:
       - key: DATABASE_URL
@@ -57,7 +54,7 @@ services:
     name: pii-service
     env: docker
     dockerfilePath: Dockerfile
-    context: apps/pii-service
+    dockerContext: apps/pii-service
     plan: starter
     envVars:
       - key: PORT
@@ -67,9 +64,10 @@ services:
   - type: keyvalue
     name: gateway-redis
     plan: starter
+    ipAllowList: []
 
 # Databases
 databases:
   - name: gateway-db
-    plan: starter
+    plan: free
     postgresMajorVersion: 15
