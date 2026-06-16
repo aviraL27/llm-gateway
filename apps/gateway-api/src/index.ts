@@ -10,6 +10,7 @@ import proxyRouter from './routes/proxy';
 import { validateDashboardAuth, validateApiKey } from './middlewares/auth';
 import { rateLimiter } from './middlewares/rateLimiter';
 import { spendGuard } from './middlewares/spendGuard';
+import { runMigrations } from '@llm-gateway/db';
 
 dotenv.config();
 
@@ -90,6 +91,19 @@ redisSub.on('pmessage', (_pattern: string, channel: string, message: string) => 
   }
 });
 
-server.listen(port, () => {
-  console.log(`Gateway API listening at http://localhost:${port}`);
-});
+const startServer = async () => {
+  if (process.env.RUN_MIGRATIONS === 'true') {
+    try {
+      await runMigrations();
+    } catch (err) {
+      console.error('Failed to run database migrations on startup:', err);
+      process.exit(1);
+    }
+  }
+
+  server.listen(port, () => {
+    console.log(`Gateway API listening at http://localhost:${port}`);
+  });
+};
+
+startServer();

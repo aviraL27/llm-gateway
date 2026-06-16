@@ -13,8 +13,9 @@ async function rateLimiter(req, res, next) {
     try {
         // Increment the count in Redis
         const current = await redis_1.redis.incr(key);
-        // If it's a new key, set a 60-second TTL
-        if (current === 1) {
+        // Ensure TTL is set on the key (robust against concurrent race conditions where current may bypass 1)
+        const ttl = await redis_1.redis.ttl(key);
+        if (ttl < 0) {
             await redis_1.redis.expire(key, 60);
         }
         const remaining = Math.max(0, limit - current);

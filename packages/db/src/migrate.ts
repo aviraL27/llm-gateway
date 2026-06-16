@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { pool } from './db';
 
-async function migrate() {
+export async function runMigrations() {
   console.log('Starting database migrations...');
   const migrationsDir = path.join(__dirname, '../migrations');
 
@@ -11,34 +11,61 @@ async function migrate() {
       throw new Error(`Migrations directory not found at: ${migrationsDir}`);
     }
 
-    const files = fs.readdirSync(migrationsDir).sort();
+    const client = await pool.connect();
+    try {
+      // 1. Create schema_migrations table if not exists
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS schema_migrations (
+          migration_name VARCHAR(255) PRIMARY KEY,
+          applied_at TIMESTAMP DEFAULT NOW()
+        )
+      `);
 
-    for (const file of files) {
-      if (!file.endsWith('.sql')) continue;
-      console.log(`Running migration: ${file}`);
-      const sql = fs.readFileSync(path.join(migrationsDir, file), 'utf8');
+      // 2. Fetch applied migrations
+      const appliedResult = await client.query('SELECT migration_name FROM schema_migrations');
+      const appliedMigrations = new Set(appliedResult.rows.map((row: any) => row.migration_name));
 
-      const client = await pool.connect();
-      try {
+      // 3. Read migration files and sort them
+      const files = fs.readdirSync(migrationsDir).sort();
+
+      for (const file of files) {
+        if (!file.endsWith('.sql')) continue;
+
+        if (appliedMigrations.has(file)) {
+          console.log(`Skipping already applied migration: ${file}`);
+          continue;
+        }
+
+        console.log(`Running migration: ${file}`);
+        const sql = fs.readFileSync(path.join(migrationsDir, file), 'utf8');
+
         await client.query('BEGIN');
         await client.query(sql);
+        await client.query('INSERT INTO schema_migrations (migration_name) VALUES ($1)', [file]);
         await client.query('COMMIT');
         console.log(`✓ Migration ${file} completed successfully.`);
-      } catch (err) {
-        await client.query('ROLLBACK');
-        console.error(`❌ Migration ${file} failed:`, err);
-        throw err;
-      } finally {
-        client.release();
       }
+
+      console.log('✓ All database migrations verified/completed successfully.');
+    } catch (err) {
+      console.error(`❌ Migration runner failed:`, err);
+      throw err;
+    } finally {
+      client.release();
     }
-    console.log('✓ All database migrations completed successfully.');
   } catch (error) {
     console.error('Migration runner failed:', error);
-    process.exit(1);
-  } finally {
-    await pool.end();
+    throw error;
   }
 }
 
-migrate();
+// Run immediately if this file is executed directly
+if (typeof require !== 'undefined' && require.main === module) {
+  runMigrations()
+    .then(() => pool.end())
+    .catch((err) => {
+      console.error('Migration runner script failed:', err);
+      process.exit(1);
+    });
+}
+
