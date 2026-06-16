@@ -20,7 +20,7 @@ services:
           property: connectionString
       - key: PII_SERVICE_URL
         fromService:
-          type: pservice
+          type: private
           name: pii-service
           property: host
       - key: RUN_MIGRATIONS
@@ -53,7 +53,7 @@ services:
           property: connectionString
 
   # 3. PII Redaction Private Service
-  - type: pservice
+  - type: private
     name: pii-service
     env: docker
     dockerfilePath: Dockerfile
