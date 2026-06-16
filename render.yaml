@@ -15,7 +15,7 @@ services:
           property: connectionString
       - key: REDIS_URL
         fromService:
-          type: redis
+          type: keyvalue
           name: gateway-redis
           property: connectionString
       - key: PII_SERVICE_URL
@@ -48,7 +48,7 @@ services:
           property: connectionString
       - key: REDIS_URL
         fromService:
-          type: redis
+          type: keyvalue
           name: gateway-redis
           property: connectionString
 
@@ -63,12 +63,13 @@ services:
       - key: PORT
         value: 8000
 
-# Databases and Redis Instances
+  # 4. Redis Cache / KeyValue Instance
+  - type: keyvalue
+    name: gateway-redis
+    plan: starter
+
+# Databases
 databases:
   - name: gateway-db
     plan: starter
     postgresMajorVersion: 15
-
-redis:
-  - name: gateway-redis
-    plan: starter
