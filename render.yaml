@@ -1,11 +1,11 @@
 services:
-  # 1. Gateway API Web Service
+  # Gateway API Web Service (free tier)
   - type: web
     name: gateway-api
     env: docker
     dockerfilePath: apps/gateway-api/Dockerfile
     dockerContext: .
-    plan: starter
+    plan: free
     envVars:
       - key: PORT
         value: 3000
@@ -18,8 +18,6 @@ services:
           type: keyvalue
           name: gateway-redis
           property: connectionString
-      - key: PII_SERVICE_URL
-        value: http://pii-service:8000
       - key: RUN_MIGRATIONS
         value: "true"
       - key: SUPABASE_URL
@@ -31,42 +29,13 @@ services:
       - key: ANTHROPIC_API_KEY
         sync: false
 
-  # 2. Background Worker Service
-  - type: worker
-    name: log-worker
-    env: docker
-    dockerfilePath: apps/worker/Dockerfile
-    dockerContext: .
-    plan: starter
-    envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: gateway-db
-          property: connectionString
-      - key: REDIS_URL
-        fromService:
-          type: keyvalue
-          name: gateway-redis
-          property: connectionString
-
-  # 3. PII Redaction Private Service
-  - type: pserv
-    name: pii-service
-    env: docker
-    dockerfilePath: Dockerfile
-    dockerContext: apps/pii-service
-    plan: starter
-    envVars:
-      - key: PORT
-        value: 8000
-
-  # 4. Redis Cache / KeyValue Instance
+  # Redis Cache / KeyValue Instance (free tier)
   - type: keyvalue
     name: gateway-redis
-    plan: starter
+    plan: free
     ipAllowList: []
 
-# Databases
+# Postgres Database (free tier)
 databases:
   - name: gateway-db
     plan: free
