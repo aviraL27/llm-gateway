@@ -19,11 +19,35 @@ const port = process.env.PORT || 3000;
 
 // Create HTTP server and Socket.IO instance
 const server = http.createServer(app);
+
+// Configure CORS origins
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',')
+  : [];
+
 const io = new Server(server, {
-  cors: { origin: '*' },
+  cors: {
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin) || allowedOrigins.length === 0 || process.env.NODE_ENV === 'development') {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+  },
 });
 
-app.use(cors());
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin) || allowedOrigins.length === 0 || process.env.NODE_ENV === 'development') {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+  })
+);
 app.use(express.json());
 
 // Public healthcheck
@@ -59,7 +83,8 @@ io.on('connection', (socket) => {
 
   try {
     const decoded = jwt.verify(token, SUPABASE_JWT_SECRET) as any;
-    const teamId = decoded.app_metadata?.team_id || decoded.user_metadata?.team_id || decoded.sub;
+    // Avoid using client-writable user_metadata to prevent BOLA escalation
+    const teamId = decoded.app_metadata?.team_id || decoded.sub;
 
     if (!teamId) {
       socket.disconnect(true);

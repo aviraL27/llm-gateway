@@ -76,7 +76,8 @@ async function validateDashboardAuth(req, res, next) {
         }
         req.user_id = userId;
         // Determine team_id (custom claim first, then fallback to user_id)
-        const teamId = decoded.app_metadata?.team_id || decoded.user_metadata?.team_id || userId;
+        // Avoid using client-writable user_metadata to prevent BOLA escalation
+        const teamId = decoded.app_metadata?.team_id || userId;
         // Ensure the team exists in the teams table
         const teamResult = await db_1.pool.query('SELECT id FROM teams WHERE id = $1', [teamId]);
         if (teamResult.rows.length === 0) {

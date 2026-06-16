@@ -30,7 +30,8 @@ export default function LoginPage() {
       }
 
       const payload = JSON.parse(atob(parts[1]));
-      const teamId = payload.app_metadata?.team_id || payload.user_metadata?.team_id || payload.sub;
+      // Avoid using client-writable user_metadata to prevent BOLA escalation
+      const teamId = payload.app_metadata?.team_id || payload.sub;
 
       if (!teamId) {
         throw new Error('No User ID or Team ID claim found in token payload.');
