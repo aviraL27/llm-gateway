@@ -40,9 +40,10 @@ services:
       - "8008:8000"
     healthcheck:
       test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\""]
-      interval: 5s
+      interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 120s
 
   gateway-api:
     build:

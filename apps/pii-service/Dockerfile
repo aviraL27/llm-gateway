@@ -12,8 +12,8 @@ COPY requirements.txt .
 # Install python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Download the medium Spacy English model for better accuracy
-RUN python -m spacy download en_core_web_md
+# Download the large Spacy English model for better accuracy and Presidio defaults
+RUN python -m spacy download en_core_web_lg
 
 COPY . .
 
